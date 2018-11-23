@@ -35,12 +35,11 @@ public class CustomerDao implements DaoInterface<Customer> {
         }    }
 
     @Override
-    public boolean update(String id, Customer newCustomer) {
+    public boolean update(String custoerId, Customer newCustomer) {
         Gson gson = new Gson();
-        Document oldCus = new Document("customerId", id);
         Document newCus = Document.parse(gson.toJson(newCustomer));
         try {
-            cusCol.updateOne(oldCus, newCus);
+            cusCol.updateOne(eq("customerId", custoerId), newCus);
             return true;
         } catch (Exception e) {
             return false;
@@ -48,8 +47,8 @@ public class CustomerDao implements DaoInterface<Customer> {
 
     @Override
     public boolean delete(String id) {
+        Document customer = new Document("customerId", id);
         try {
-            Document customer = new Document("customerId", id);
             cusCol.deleteOne(customer);
             return true;
         } catch (Exception e) {

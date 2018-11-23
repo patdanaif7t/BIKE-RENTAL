@@ -16,44 +16,35 @@ import org.bson.Document;
  *
  * @author firstx
  */
-public class EmployeeDao {
+public class EmployeeDao implements DaoInterface<Employee>{
     private static MongoCollection<Employee> empCol;
     
     public EmployeeDao() {
         empCol = Database.getDatabase().getCollection("employees", Employee.class);
     } 
-    
-    public boolean addEmployee(Employee employee) {
+
+    @Override
+    public boolean insert(Employee employee) {
         try {
             empCol.insertOne(employee);     
             return true;
         } catch (Exception e) {
             return false;
-        }
-    }
-    
-    public Employee getEmployeeById(String employeeId) {
-        return empCol.find(eq("employeeId", employeeId)).first();
-    }
+        }    }
 
-    
-    public List<Employee> getAllEmployee() {
-        return empCol.find().into(new ArrayList<>());
-    }
-    
-    public boolean editEmployeeById(String employeeId, Employee newEmployee) {
+    @Override
+    public boolean update(String employeeId, Employee newEmployee) {
         Gson gson = new Gson();
-        Document oldEmp = new Document("employeeId", employeeId);
         Document newEmp = Document.parse(gson.toJson(newEmployee));
         try {
-            empCol.updateOne(oldEmp, newEmp);
+            empCol.updateOne(eq("employeeId", employeeId), newEmp);
             return true;
         } catch (Exception e) {
             return false;
-        }
-    }
-    
-    public boolean deleteEmployee(String employeeId) {
+        }    }
+
+    @Override
+    public boolean delete(String employeeId) {
         Document employeeDoc = new Document("employeeId", employeeId);
         try {
             empCol.deleteOne(employeeDoc);
@@ -61,5 +52,15 @@ public class EmployeeDao {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public Employee getById(String employeeId) {
+        return empCol.find(eq("employeeId", employeeId)).first();
+    }
+
+    @Override
+    public List<Employee> getAll() {
+        return empCol.find().into(new ArrayList<>());
     }
 }

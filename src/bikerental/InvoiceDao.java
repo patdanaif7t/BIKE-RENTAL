@@ -16,29 +16,11 @@ import org.bson.Document;
  *
  * @author anupongpummok
  */
-public class InvoiceDao {
-     static MongoCollection<Invoice> invoiceCol;
+public class InvoiceDao implements DaoInterface<Invoice>{
+    private static MongoCollection<Invoice> invoiceCol;
     
     public InvoiceDao() {
         invoiceCol = Database.getDatabase().getCollection("invoices", Invoice.class);
-    }
-    
-    public boolean insertVoice(Invoice invoice) {
-        try {
-            invoiceCol.insertOne(invoice);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-    
-    public Invoice findById(String invoiceId) {
-        return invoiceCol.find(eq("invoiceId", invoiceId)).first();
-
-    }
-    
-    public List<Invoice> findAll() {
-        return invoiceCol.find().into(new ArrayList<>());
     }
     
     public boolean switchStatusById(String invoiceId, String status) {
@@ -65,7 +47,21 @@ public class InvoiceDao {
         }
     }
     
-    public boolean editById(String invoiceId, Invoice newInvoice) {
+    public int incrementInvoiceId() {
+        return (int) invoiceCol.count()+1;
+    }
+
+    @Override
+    public boolean insert(Invoice invoice) {
+        try {
+            invoiceCol.insertOne(invoice);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }    }
+
+    @Override
+    public boolean update(String invoiceId, Invoice newInvoice) {
         Gson gson = new Gson();
         Document invoiceDoc = Document.parse(gson.toJson(newInvoice));
         try {
@@ -73,11 +69,21 @@ public class InvoiceDao {
             return true;
         } catch (Exception e) {
             return false;
-        }
+        }    }
+
+    @Override
+    public boolean delete(String id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    public int incrementInvoiceId() {
-        return (int) invoiceCol.count()+1;
+
+    @Override
+    public Invoice getById(String invoiceId) {
+        return invoiceCol.find(eq("invoiceId", invoiceId)).first();
+    }
+
+    @Override
+    public List<Invoice> getAll() {
+        return invoiceCol.find().into(new ArrayList<>());
     }
     
 

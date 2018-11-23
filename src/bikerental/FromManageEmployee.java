@@ -16,11 +16,14 @@ import javax.swing.table.DefaultTableModel;
  */
 public class FromManageEmployee extends javax.swing.JFrame implements FormTableInterface {
 
-    
+    private ServiceManageEmployee service;
     
     /** Creates new form FromManageEmployee */
     public FromManageEmployee() {
+                Database.init();
         initComponents();
+        service = new ServiceManageEmployee();
+        renderTable();
     }
 
     /** This method is called from within the constructor to
@@ -364,19 +367,19 @@ public class FromManageEmployee extends javax.swing.JFrame implements FormTableI
 
     @Override
     public void renderTable() {
-        List<Bike> bikeList = service.getAllBikeItr();
-        Iterator<Bike> cursor = bikeList.iterator();
+        List<Employee> employeeList = service.searchAll();
+        Iterator<Employee> cursor = employeeList.iterator();
 
-        String[] column = {"BikeId", "BikeStatus"};
+        String[] column = {"employeeId", "role"};
 
         DefaultTableModel model = new DefaultTableModel(column, 0);
 
         try {
             while (cursor.hasNext()) {
-                Bike bike = cursor.next();
-                String bikeId = bike.getBikeId();
-                String bikeStatus = bike.getBikeStatus();
-                model.addRow(new Object[]{bikeId, bikeStatus});
+                Employee employee = cursor.next();
+                String employeeId = employee.getEmployeeId();
+                String employeeRole = employee.getRole();
+                model.addRow(new Object[]{employeeId, employeeRole});
             }
         } finally {
 

@@ -27,18 +27,6 @@ public class ServiceRent {
         bikeDao = new BikeDao();
         invDao = new InvoiceDao();
     }
-
-    public BikeDao getBikeDao() {
-        return bikeDao;
-    }
-
-    public CustomerDao getCusDao() {
-        return cusDao;
-    }
-
-    public InvoiceDao getInvDao() {
-        return invDao;
-    }
     
     public void alertMessage(String message){
         JLabel label = new JLabel(message);
@@ -47,40 +35,26 @@ public class ServiceRent {
     }
     
     public boolean isCitizenIdValid(String citizenId) {
-        if (citizenId.length()!=13){
-            return false;
-        }
-        return true;
 //        cus = cusDao.getCusById(citizenId);
 //        int sum = 0;
 //        for (int i = 0; i < 12; i++) {
 //            sum += Character.getNumericValue(cus.getCusCitizenId().charAt(i))*(13-i);
 //        }
 //        return (11-sum%11)%10 == Character.getNumericValue(cus.getCusCitizenId().charAt(12));
+        
+        return citizenId.length() == 13;
     }
     
     public boolean isBikeAvailable(Bike bike) {
-        if (bike.getBikeStatus().equals("ว่าง")) {
-            return true;
-        } else {
-            return false;
-        }
+        return bike.getBikeStatus().equals("ว่าง");
     }
     
     public boolean isTelvalid(String telField) {
-        if (telField.length() == 10) {
-            return true;
-        } else {
-            return false;
-        }
+        return telField.length() == 10;
     }
     
     public boolean isFill(String field) {
-        if (field.equals("")) {
-            return false;
-        } else {
-            return true;
-        }
+        return !field.equals("");
     }
     
     public String getCurrentDate(){
@@ -89,7 +63,15 @@ public class ServiceRent {
     
     public boolean isFieldAllFill(String bikeId , String citizenId , String fName , String lName , String Tel , String rentId , String rentDate ,String returnDate , String fee) {
 
-        if(!isFill(bikeId)||!isFill(citizenId)||!isFill(fName)||!isFill(lName)||!isFill(Tel)||!isFill(rentId)||!isFill(rentDate)||!isFill(returnDate)||!isFill(fee)){
+        if(!isFill(bikeId)||
+                !isFill(citizenId)||
+                !isFill(fName)||
+                !isFill(lName)||
+                !isFill(Tel)||
+                !isFill(rentId)||
+                !isFill(rentDate)||
+                !isFill(returnDate)||
+                !isFill(fee)){
             return false ; //กรอกข้อมูลไม่ครบ
         }else{
             return true ; //กรอกข้อมูลครบ
@@ -112,11 +94,11 @@ public class ServiceRent {
             
             bikeDao.switchStatusById(bikeId,status);
 
-            if (cusDao.getCusById(customer.getCusCitizenId()) == null) {
-                    cusDao.addCustomer(customer);
+            if (cusDao.getById(customer.getCusCitizenId()) == null) {
+                    cusDao.insert(customer);
             }
 
-            invDao.insertVoice(invoice);     
+            invDao.insert(invoice);     
         
         }catch(Exception e){
                     //เช่าไม่สำเร็จ
@@ -128,20 +110,20 @@ public class ServiceRent {
     }
     
     public Bike findBikeById(String bikeId) {
-        return bikeDao.getBikeById(bikeId);
+        return bikeDao.getById(bikeId);
     }
     
     public List<Bike> getAllBikeItr() {
-        return bikeDao.getAllBike();
+        return bikeDao.getAll();
     }
     
      public List<Customer> getAllCustomerItr() {
-        return cusDao.getAllCustomer();
+        return cusDao.getAll();
     }
 
      
     public Customer findCusById(String cusId) {
-        return cusDao.getCusById(cusId);
+        return cusDao.getById(cusId);
     }
         
 }
