@@ -16,7 +16,7 @@ import org.bson.Document;
  *
  * @author anupongpummok
  */
-public class CustomerDao {
+public class CustomerDao implements DaoInterface<Customer> {
     
     private static MongoCollection<Customer> cusCol;
     
@@ -24,35 +24,47 @@ public class CustomerDao {
         cusCol = Database.getDatabase().getCollection("customers", Customer.class);
     } 
     
-    public boolean addCustomer(Customer customer) {
+
+    @Override
+    public boolean insert(Customer customer) {
         try {
             cusCol.insertOne(customer);     
             return true;
         } catch (Exception e) {
             return false;
-        }
-    }
-    
-    public Customer getCusById(String cusCitizenId) {
-        return cusCol.find(eq("cusCitizenId", cusCitizenId)).first();
-    }
-    
+        }    }
 
-    
-    public List<Customer> GetAllCustomer() {
-        return cusCol.find().into(new ArrayList<>());
-    }
-    
-    public boolean editCustomer(Customer customer, Customer newCustomer) {
+    @Override
+    public boolean update(String id, Customer newCustomer) {
         Gson gson = new Gson();
-        Document oldCus = Document.parse(gson.toJson(customer));
+        Document oldCus = new Document("customerId", id);
         Document newCus = Document.parse(gson.toJson(newCustomer));
         try {
             cusCol.updateOne(oldCus, newCus);
             return true;
         } catch (Exception e) {
             return false;
+        }    }
+
+    @Override
+    public boolean delete(String id) {
+        try {
+            Document customer = new Document("customerId", id);
+            cusCol.deleteOne(customer);
+            return true;
+        } catch (Exception e) {
+            return false;
         }
+    }
+
+    @Override
+    public Customer getById(String cusCitizenId) {
+        return cusCol.find(eq("cusCitizenId", cusCitizenId)).first();
+    }
+
+    @Override
+    public List<Customer> getAll() {
+        return cusCol.find().into(new ArrayList<>());
     }
     
 }

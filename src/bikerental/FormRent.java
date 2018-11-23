@@ -17,11 +17,10 @@ import org.bson.types.ObjectId;
  *
  * @author firstx
  */
-public class FormRent extends javax.swing.JFrame {
+public class FormRent extends javax.swing.JFrame implements FormTableInterface{
 
     ServiceRent service;
-    BikeDao bikeDao;
-
+    
     /**
      * Creates new form FormRent
      */
@@ -30,8 +29,8 @@ public class FormRent extends javax.swing.JFrame {
         // System.out.println(date.getDate()+date.getMonth()+date.getY);
         initComponents();
         service = new ServiceRent();
-        showTable();
-
+        renderTable();
+        
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         //Date currentDate = sdf.parse("06/24/2017");
 
@@ -40,7 +39,8 @@ public class FormRent extends javax.swing.JFrame {
 
     }
 
-    public void showTable() {
+    @Override
+    public void renderTable() {
         List<Bike> bikeList = service.getAllBikeItr();
         Iterator<Bike> cursor = bikeList.iterator();
 
@@ -478,7 +478,7 @@ public class FormRent extends javax.swing.JFrame {
 
     private void btnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAllActionPerformed
         // TODO add your handling code here:
-        showTable();
+        renderTable();
         txtSearch.setText("");
     }//GEN-LAST:event_btnAllActionPerformed
 

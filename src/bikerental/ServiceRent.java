@@ -136,7 +136,7 @@ public class ServiceRent {
     }
     
      public List<Customer> getAllCustomerItr() {
-        return cusDao.GetAllCustomer();
+        return cusDao.getAllCustomer();
     }
 
      

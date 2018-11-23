@@ -6,12 +6,18 @@
 
 package bikerental;
 
+import java.util.Iterator;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author firstx
  */
-public class FromManageEmployee extends javax.swing.JFrame {
+public class FromManageEmployee extends javax.swing.JFrame implements FormTableInterface {
 
+    
+    
     /** Creates new form FromManageEmployee */
     public FromManageEmployee() {
         initComponents();
@@ -34,7 +40,7 @@ public class FromManageEmployee extends javax.swing.JFrame {
         tx_Date = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tb_emp = new javax.swing.JTable();
+        tableEmployee = new javax.swing.JTable();
         bt_addemp = new javax.swing.JButton();
         bt_del = new javax.swing.JButton();
         tx_id = new javax.swing.JTextField();
@@ -97,8 +103,8 @@ public class FromManageEmployee extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        tb_emp.setFont(new java.awt.Font("DB Narai X", 0, 24)); // NOI18N
-        tb_emp.setModel(new javax.swing.table.DefaultTableModel(
+        tableEmployee.setFont(new java.awt.Font("DB Narai X", 0, 24)); // NOI18N
+        tableEmployee.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -109,12 +115,12 @@ public class FromManageEmployee extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tb_emp.addMouseListener(new java.awt.event.MouseAdapter() {
+        tableEmployee.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tb_empMouseClicked(evt);
+                tableEmployeeMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tb_emp);
+        jScrollPane1.setViewportView(tableEmployee);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 60, 780, 240));
 
@@ -246,65 +252,18 @@ public class FromManageEmployee extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tb_empMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tb_empMouseClicked
+    private void tableEmployeeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableEmployeeMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_tb_empMouseClicked
+    }//GEN-LAST:event_tableEmployeeMouseClicked
 
     private void bt_addempActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addempActionPerformed
         // TODO add your handling code here:
-        if(!tx_id.getText().equals("")&&!tx_pass.getText().equals("")){
-
-            try {
-
-                BasicDBObject whereQuery = new BasicDBObject();
-                whereQuery.put("ID", tx_id.getText());
-                DBCursor cursor = coll.find(whereQuery);
-
-                boolean ck = false;
-
-                while(cursor.hasNext()) {
-
-                    JLabel text = new JLabel("มีรหัสผู้ใช้นี้อยู่แล้ว");
-                    text.setFont(new Font("TH Sarabun New", Font.BOLD, 18));
-                    JOptionPane.showMessageDialog(this, text, "แจ้งเตือน", JOptionPane.WARNING_MESSAGE);
-                    tx_id.setText("");
-                    tx_pass.setText("");
-                    ck = true;
-                    break;
-                }
-                if(!ck){
-                    In();
-                }
-
-            } catch (Exception e) {
-
-            }
-        }else if(tx_id.getText().equals("")&&tx_pass.getText().equals("")){
-            JLabel text = new JLabel("กรุณาใส่ชื่อผู้ใช้และรหัสผ่าน");
-            text.setFont(new Font("TH Sarabun New", Font.BOLD, 18));
-            JOptionPane.showMessageDialog(this, text);
-
-        }else if(tx_id.getText().equals("")){
-            JLabel text = new JLabel("กรุณาใส่ชื่อผู้ใช้");
-            text.setFont(new Font("TH Sarabun New", Font.BOLD, 18));
-            JOptionPane.showMessageDialog(this, text);
-        }else if(tx_pass.getText().equals("")){
-            JLabel text = new JLabel("กรุณาใส่รหัสผ่าน");
-            text.setFont(new Font("TH Sarabun New", Font.BOLD, 18));
-            JOptionPane.showMessageDialog(this, text);
-        }
+        
     }//GEN-LAST:event_bt_addempActionPerformed
 
     private void bt_delActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_delActionPerformed
         // TODO add your handling code here:
-        ckdel();
-        if(tx_id.getText().equals("")){
-            JLabel text = new JLabel("กรุณากรอก ID พนักงาน");
-            text.setFont(new Font("TH Sarabun New", Font.BOLD, 18));
-            JOptionPane.showMessageDialog(this, text);
-        }else if(ckdel){
-            Delete();
-        }
+        
     }//GEN-LAST:event_bt_delActionPerformed
 
     private void tx_idActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tx_idActionPerformed
@@ -313,7 +272,7 @@ public class FromManageEmployee extends javax.swing.JFrame {
 
     private void bt_editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_editActionPerformed
         // TODO add your handling code here:
-        Edit();
+        
     }//GEN-LAST:event_bt_editActionPerformed
 
     private void menuMainMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuMainMenuMouseClicked
@@ -396,11 +355,33 @@ public class FromManageEmployee extends javax.swing.JFrame {
     private javax.swing.JMenu menuMainMenu;
     private javax.swing.JMenu menuRentBike;
     private javax.swing.JMenu menuReturnBike;
-    private javax.swing.JTable tb_emp;
+    private javax.swing.JTable tableEmployee;
     private javax.swing.JLabel tx_Date;
     private javax.swing.JTextField tx_id;
     private javax.swing.JTextField tx_pass;
     private javax.swing.JLabel tx_time;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void renderTable() {
+        List<Bike> bikeList = service.getAllBikeItr();
+        Iterator<Bike> cursor = bikeList.iterator();
+
+        String[] column = {"BikeId", "BikeStatus"};
+
+        DefaultTableModel model = new DefaultTableModel(column, 0);
+
+        try {
+            while (cursor.hasNext()) {
+                Bike bike = cursor.next();
+                String bikeId = bike.getBikeId();
+                String bikeStatus = bike.getBikeStatus();
+                model.addRow(new Object[]{bikeId, bikeStatus});
+            }
+        } finally {
+
+        }
+        tableEmployee.setModel(model);    
+    }
 
 }
