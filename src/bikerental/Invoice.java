@@ -11,23 +11,38 @@ import java.util.Date;
  * @author anupongpummok
  */
 public final class Invoice {
-    private String id;
+    private String invoiceId;
     private String bikeId;
-    private Date dateRent;
-    private Date dateReturn;
-    private Date dateReturnReal;
+    private String dateRent;
+    private String dateReturn;
+    private String dateReturnReal;
     private String status;
     private Customer customer;
-    private Bike bike;
     private float fee;
     private float fine;
 
-    public String getId() {
-        return id;
+    public Invoice(String invoiceId,
+            String bikeId,
+            String dateRent,
+            String dateReturn,
+            String status,
+            Customer customer,
+            float fee) {
+        this.invoiceId = invoiceId;
+        this.bikeId = bikeId;
+        this.dateRent = dateRent;
+        this.dateReturn = dateReturn;
+        this.status = status;
+        this.customer = customer;
+        this.fee = fee;
+    }
+    
+    public String getInvoiceId() {
+        return invoiceId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setInvoiceId(String id) {
+        this.invoiceId = id;
     }
 
     public String getBikeId() {
@@ -38,27 +53,27 @@ public final class Invoice {
         this.bikeId = bikeId;
     }
 
-    public Date getDateRent() {
+    public String getDateRent() {
         return dateRent;
     }
 
-    public void setDateRent(Date dateRent) {
+    public void setDateRent(String dateRent) {
         this.dateRent = dateRent;
     }
 
-    public Date getDateReturn() {
+    public String getDateReturn() {
         return dateReturn;
     }
 
-    public void setDateReturn(Date dateReturn) {
+    public void setDateReturn(String dateReturn) {
         this.dateReturn = dateReturn;
     }
 
-    public Date getDateReturnReal() {
+    public String getDateReturnReal() {
         return dateReturnReal;
     }
 
-    public void setDateReturnReal(Date dateReturnReal) {
+    public void setDateReturnReal(String dateReturnReal) {
         this.dateReturnReal = dateReturnReal;
     }
 
@@ -76,14 +91,6 @@ public final class Invoice {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
-    }
-
-    public Bike getBike() {
-        return bike;
-    }
-
-    public void setBike(Bike bike) {
-        this.bike = bike;
     }
 
     public float getFee() {

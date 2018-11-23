@@ -6,10 +6,10 @@
 package bikerental;
 
 import com.google.gson.Gson;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import static com.mongodb.client.model.Filters.eq;
 import java.util.ArrayList;
+import java.util.List;
 import org.bson.Document;
 
 /**
@@ -17,6 +17,7 @@ import org.bson.Document;
  * @author anupongpummok
  */
 public class CustomerDao {
+    
     private static MongoCollection<Customer> cusCol;
     
     public CustomerDao() {
@@ -36,8 +37,10 @@ public class CustomerDao {
         return cusCol.find(eq("cusCitizenId", cusCitizenId)).first();
     }
     
-    public FindIterable<Customer> GetAllCustomer() {
-        return cusCol.find();
+
+    
+    public List<Customer> GetAllCustomer() {
+        return cusCol.find().into(new ArrayList<>());
     }
     
     public boolean editCustomer(Customer customer, Customer newCustomer) {
@@ -52,13 +55,4 @@ public class CustomerDao {
         }
     }
     
-    
-    public static void main(String[] args) {
-                Database.init();
-
-        CustomerDao dao =  new CustomerDao();
-        if(dao.getCusById("1200101755322") == null) {
-            System.out.println("null");
-        }
-    }
 }

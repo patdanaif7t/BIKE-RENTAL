@@ -14,6 +14,17 @@ public final class Customer {
     private String cusTel;
     private String cusFName;
     private String cusLName;
+    
+    public Customer() {
+        
+    }
+
+    public Customer(String cusCitizenId, String cusFName, String cusLName, String cusTel) {
+        this.cusCitizenId = cusCitizenId;
+        this.cusTel = cusTel;
+        this.cusFName = cusFName;
+        this.cusLName = cusLName;
+    }
 
     public String getCusCitizenId() {
         return cusCitizenId;
@@ -21,6 +32,11 @@ public final class Customer {
 
     public void setCusCitizenId(final String cusCitizenId) {
         this.cusCitizenId = cusCitizenId;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" + "cusCitizenId=" + cusCitizenId + ", cusTel=" + cusTel + ", cusFName=" + cusFName + ", cusLName=" + cusLName + '}';
     }
 
     public String getCusTel() {

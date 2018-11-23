@@ -5,11 +5,11 @@
  */
 package bikerental;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoCursor;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import org.bson.types.ObjectId;
 
@@ -18,27 +18,36 @@ import org.bson.types.ObjectId;
  * @author firstx
  */
 public class FormRent extends javax.swing.JFrame {
+
     ServiceRent service;
-    
+    BikeDao bikeDao;
+
     /**
      * Creates new form FormRent
      */
     public FormRent() {
+
+        // System.out.println(date.getDate()+date.getMonth()+date.getY);
         initComponents();
-        Database.init();
         service = new ServiceRent();
         showTable();
-        
-        
+
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        //Date currentDate = sdf.parse("06/24/2017");
+
+        txtRentId.setText("R"+service.invDao.incrementInvoiceId());
+        txtRentDate.setText(service.getCurrentDate());
+
     }
-    
+
     public void showTable() {
-        MongoCursor<Bike> cursor = service.getAllBikeItr();
-        
+        List<Bike> bikeList = service.getAllBikeItr();
+        Iterator<Bike> cursor = bikeList.iterator();
+
         String[] column = {"BikeId", "BikeStatus"};
-        
+
         DefaultTableModel model = new DefaultTableModel(column, 0);
-        
+
         try {
             while (cursor.hasNext()) {
                 Bike bike = cursor.next();
@@ -47,10 +56,49 @@ public class FormRent extends javax.swing.JFrame {
                 model.addRow(new Object[]{bikeId, bikeStatus});
             }
         } finally {
-            cursor.close();
+
         }
         tableBikeStatus.setModel(model);
-        cursor.close();
+    }
+
+    public void setCustomer() {
+        List<Customer> customerList = service.getAllCustomerItr();
+        Iterator<Customer> cursor = customerList.iterator();
+
+        try {
+            while (cursor.hasNext()) {
+                Customer customer = cursor.next();
+                System.out.println(customer.getCusCitizenId());
+                if (customer.getCusCitizenId().equals(txtCitizenId.getText())) {
+                    txtFName.setText(customer.getCusFName());
+                    txtLName.setText(customer.getCusLName());
+                    txtTel.setText(customer.getCusTel());
+                }
+            }
+
+        } finally {
+
+        }
+    }
+
+    public void search(String bikeSearchId) {
+        try {
+            Bike cursor = service.findBikeById(bikeSearchId);
+
+            String[] column = {"BikeId", "BikeStatus"};
+
+            DefaultTableModel model = new DefaultTableModel(column, 0);
+            Bike bike = cursor;
+            String bikeId = bike.getBikeId();
+            String bikeStatus = bike.getBikeStatus();
+            model.addRow(new Object[]{bikeId, bikeStatus});
+
+            tableBikeStatus.setModel(model);
+        } catch (Exception e) {
+            service.alertMessage("ไม่มีรถคันนี้ในระบบ");
+            txtSearch.setText("");
+        }
+
     }
 
     /**
@@ -93,6 +141,7 @@ public class FormRent extends javax.swing.JFrame {
         txtFName = new javax.swing.JTextField();
         txtCitizenId = new javax.swing.JTextField();
         txtBikeId = new javax.swing.JTextField();
+        btnVerify = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         menuMainMenu = new javax.swing.JMenu();
         menuBikeInfo = new javax.swing.JMenu();
@@ -163,7 +212,7 @@ public class FormRent extends javax.swing.JFrame {
                 btnSearchActionPerformed(evt);
             }
         });
-        head.add(btnSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 110, 100, 40));
+        head.add(btnSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 110, 130, 40));
 
         btnAll.setBackground(new java.awt.Color(255, 255, 255));
         btnAll.setFont(new java.awt.Font("TH Sarabun New", 0, 18)); // NOI18N
@@ -176,9 +225,9 @@ public class FormRent extends javax.swing.JFrame {
                 btnAllActionPerformed(evt);
             }
         });
-        head.add(btnAll, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 110, 120, 40));
+        head.add(btnAll, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 110, 140, 40));
 
-        tableBikeStatus.setFont(new java.awt.Font("TH Sarabun New", 1, 18)); // NOI18N
+        tableBikeStatus.setFont(new java.awt.Font("TH Sarabun New", 1, 24)); // NOI18N
         tableBikeStatus.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -199,17 +248,17 @@ public class FormRent extends javax.swing.JFrame {
 
         head.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, 780, 170));
 
-        labelRentId.setFont(new java.awt.Font("TH Sarabun New", 0, 24)); // NOI18N
+        labelRentId.setFont(new java.awt.Font("TH Sarabun New", 1, 24)); // NOI18N
         labelRentId.setText("รหัสการเช่า-คืน :");
-        head.add(labelRentId, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 350, -1, -1));
+        head.add(labelRentId, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 350, -1, -1));
 
-        labelRentDate.setFont(new java.awt.Font("TH Sarabun New", 0, 24)); // NOI18N
+        labelRentDate.setFont(new java.awt.Font("TH Sarabun New", 1, 24)); // NOI18N
         labelRentDate.setText("วันที่เช่า :");
-        head.add(labelRentDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 390, -1, -1));
+        head.add(labelRentDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 390, -1, -1));
 
-        labelCitizenId.setFont(new java.awt.Font("TH Sarabun New", 0, 24)); // NOI18N
+        labelCitizenId.setFont(new java.awt.Font("TH Sarabun New", 1, 24)); // NOI18N
         labelCitizenId.setText("เลขประจำตัวประชาชน :");
-        head.add(labelCitizenId, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 390, 160, -1));
+        head.add(labelCitizenId, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 390, 170, -1));
 
         btnRent.setFont(new java.awt.Font("TH Sarabun New", 0, 24)); // NOI18N
         btnRent.setText("เช่ารถ");
@@ -220,69 +269,81 @@ public class FormRent extends javax.swing.JFrame {
                 btnRentActionPerformed(evt);
             }
         });
-        head.add(btnRent, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 520, -1, -1));
+        head.add(btnRent, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 520, -1, -1));
 
-        labelFName.setFont(new java.awt.Font("TH Sarabun New", 0, 24)); // NOI18N
+        labelFName.setFont(new java.awt.Font("TH Sarabun New", 1, 24)); // NOI18N
         labelFName.setText("ชื่อ :");
         head.add(labelFName, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 430, -1, -1));
 
-        labelBikeId.setFont(new java.awt.Font("TH Sarabun New", 0, 24)); // NOI18N
+        labelBikeId.setFont(new java.awt.Font("TH Sarabun New", 1, 24)); // NOI18N
         labelBikeId.setText("รหัสรถ :");
-        head.add(labelBikeId, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 350, -1, -1));
+        head.add(labelBikeId, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 350, -1, -1));
 
-        labelLName.setFont(new java.awt.Font("TH Sarabun New", 0, 24)); // NOI18N
+        labelLName.setFont(new java.awt.Font("TH Sarabun New", 1, 24)); // NOI18N
         labelLName.setText("นามสกุล :");
-        head.add(labelLName, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 470, -1, -1));
+        head.add(labelLName, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 470, -1, -1));
 
-        labelTel.setFont(new java.awt.Font("TH Sarabun New", 0, 24)); // NOI18N
+        labelTel.setFont(new java.awt.Font("TH Sarabun New", 1, 24)); // NOI18N
         labelTel.setText("หมายเลขโทรศัพท์ :");
-        head.add(labelTel, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 510, -1, -1));
+        head.add(labelTel, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 510, -1, -1));
 
-        labelReturnDate.setFont(new java.awt.Font("TH Sarabun New", 0, 24)); // NOI18N
+        labelReturnDate.setFont(new java.awt.Font("TH Sarabun New", 1, 24)); // NOI18N
         labelReturnDate.setText("วันที่คืน :");
-        head.add(labelReturnDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 430, -1, -1));
+        head.add(labelReturnDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 430, -1, -1));
 
-        labelFee.setFont(new java.awt.Font("TH Sarabun New", 0, 24)); // NOI18N
+        labelFee.setFont(new java.awt.Font("TH Sarabun New", 1, 24)); // NOI18N
         labelFee.setText("ค่าเช่า :");
-        head.add(labelFee, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 470, -1, -1));
+        head.add(labelFee, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 470, -1, -1));
 
+        txtRentId.setEditable(false);
         txtRentId.setFont(new java.awt.Font("TH Sarabun New", 0, 24)); // NOI18N
-        head.add(txtRentId, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 350, 157, -1));
+        head.add(txtRentId, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 350, 157, -1));
 
         txtRentDate.setEditable(false);
         txtRentDate.setFont(new java.awt.Font("TH Sarabun New", 0, 24)); // NOI18N
         txtRentDate.setText("          วันที่ปัจจุบัน");
-        head.add(txtRentDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 390, 157, -1));
+        head.add(txtRentDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 390, 157, -1));
 
-        txtReturnDate.setEditable(false);
         txtReturnDate.setFont(new java.awt.Font("TH Sarabun New", 0, 24)); // NOI18N
+        txtReturnDate.setText("dd/MM/yyyy");
+        txtReturnDate.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtReturnDateFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtReturnDateFocusLost(evt);
+            }
+        });
         txtReturnDate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtReturnDateActionPerformed(evt);
             }
         });
-        head.add(txtReturnDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 430, 157, -1));
+        head.add(txtReturnDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 430, 157, -1));
 
+        txtFee.setEditable(false);
         txtFee.setFont(new java.awt.Font("TH Sarabun New", 0, 24)); // NOI18N
+        txtFee.setText("200");
         txtFee.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtFeeActionPerformed(evt);
             }
         });
-        head.add(txtFee, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 470, 157, -1));
+        head.add(txtFee, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 470, 157, -1));
 
         txtTel.setFont(new java.awt.Font("TH Sarabun New", 0, 24)); // NOI18N
-        head.add(txtTel, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 510, 157, -1));
+        head.add(txtTel, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 510, 157, -1));
 
         txtLName.setFont(new java.awt.Font("TH Sarabun New", 0, 24)); // NOI18N
-        head.add(txtLName, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 470, 157, -1));
+        head.add(txtLName, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 470, 157, -1));
 
         txtFName.setFont(new java.awt.Font("TH Sarabun New", 0, 24)); // NOI18N
-        head.add(txtFName, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 430, 157, -1));
+        head.add(txtFName, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 430, 157, -1));
 
         txtCitizenId.setFont(new java.awt.Font("TH Sarabun New", 0, 24)); // NOI18N
-        head.add(txtCitizenId, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 390, 157, -1));
+        head.add(txtCitizenId, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 390, 157, -1));
 
+        txtBikeId.setEditable(false);
         txtBikeId.setFont(new java.awt.Font("TH Sarabun New", 0, 24)); // NOI18N
         txtBikeId.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -294,7 +355,15 @@ public class FormRent extends javax.swing.JFrame {
                 txtBikeIdKeyReleased(evt);
             }
         });
-        head.add(txtBikeId, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 350, 157, -1));
+        head.add(txtBikeId, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 350, 157, -1));
+
+        btnVerify.setText("ตรวจสอบ");
+        btnVerify.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerifyActionPerformed(evt);
+            }
+        });
+        head.add(btnVerify, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 400, -1, -1));
 
         menuBar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 51, 0), 1, true));
         menuBar.setEnabled(false);
@@ -373,8 +442,8 @@ public class FormRent extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void menuMainMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuMainMenuMouseClicked
-       // TODO add your handling code here:
-       new FormMenuMain().show();
+        // TODO add your handling code here:
+        new FormMenuMain().show();
         dispose();
     }//GEN-LAST:event_menuMainMenuMouseClicked
 
@@ -399,11 +468,18 @@ public class FormRent extends javax.swing.JFrame {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
-        
+        if (!service.isFill(txtSearch.getText())) {
+            System.out.println("ไม่กรอก");
+        } else {
+            search(txtSearch.getText());
+        }
+
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAllActionPerformed
         // TODO add your handling code here:
+        showTable();
+        txtSearch.setText("");
     }//GEN-LAST:event_btnAllActionPerformed
 
     private void btnRentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRentActionPerformed
@@ -414,19 +490,47 @@ public class FormRent extends javax.swing.JFrame {
         String lName = txtLName.getText();
         String Tel = txtTel.getText();
         String rentId = txtRentId.getText();
-        String rentDate = txtRentDate.getText();
-        String returnDate = txtReturnDate.getText();
+        String dateRent = txtRentDate.getText();
+        String dateReturn = txtReturnDate.getText();
         String fee = txtFee.getText();
-        
-        BikeDao bikeDao = new BikeDao();
-        bikeDao.switchStatusById(bikeId, rentId);        
-        
-        
-    }//GEN-LAST:event_btnRentActionPerformed
+        String bikeStatus = tableBikeStatus.getModel().getValueAt(tableBikeStatus.getSelectedRow(), 1).toString();
 
-    private void txtReturnDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtReturnDateActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtReturnDateActionPerformed
+        Customer customer = new Customer(citizenId, fName, lName, Tel);
+        Bike bike = new Bike(bikeId, bikeStatus);
+        Invoice invoice = new Invoice(rentId, bikeId, dateRent, dateReturn, bikeStatus, customer, Float.parseFloat(fee));
+
+        // ตรวจสอบว่ากรอกข้อมูลครบถ้วนหรือไม่
+        if (!service.isFieldAllFill(bikeId, citizenId, fName, lName, Tel, rentId, dateRent, dateReturn, fee)) {
+
+            if (!service.isFill(bikeId)) {
+                //ไม่ได้เลือกรถในตาราง
+                service.alertMessage("กรุณาเลือกรถที่ต้องการเช่าในตาราง");
+            } else {
+                //กรอกข้อมูลไม่ครบ
+                service.alertMessage("กรุณากรอกข้อมูลให้ครบถ้วน");
+            }
+        } else {
+            //กรอกข้อมูลครบ
+
+            // ตรวจสอบว่าช่องเบอร์โทร กรอกครบ10หลักหรือไม่
+            if (!service.isTelvalid(Tel)) {
+                //กรอกไม่ครบ
+                service.alertMessage("กรุณากรอกหมายเลขโทรศัพท์จำนวน 10 หลัก");
+            } else if (!service.isCitizenIdValid(citizenId)) {
+                //กรอกบัตรประจำตัวประชาชนไม่ครบ
+                service.alertMessage("กรุณากรอกหมายเลขประจำตัวประชาชนให้ครบ 13 หลัก");
+            } else {
+                // กรอกข้อมูลถูกต้อง และ ครบทุกช่อง
+                System.out.println("เช่า");
+                if (service.Rent(bikeId,bikeStatus, customer, invoice)) {
+                    service.alertMessage("เช่าสำเร็จ");
+                } else {
+                    service.alertMessage("เช่าไม่สำเร็จ");
+                }
+            }
+        }
+
+    }//GEN-LAST:event_btnRentActionPerformed
 
     private void txtFeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFeeActionPerformed
         // TODO add your handling code here:
@@ -444,27 +548,77 @@ public class FormRent extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) tableBikeStatus.getModel();
         int rowIndex = tableBikeStatus.getSelectedRow();
-        
+
         txtBikeId.setText(model.getValueAt(rowIndex, 0).toString());
-             
+
     }//GEN-LAST:event_tableBikeStatusMouseClicked
 
-    public void get(){
-        MongoCursor<Bike> cursor = service.getAllBikeItr();
-        
-      
+    private void btnVerifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerifyActionPerformed
+        // TODO add your handling code here:
+
+        if (!service.isCitizenIdValid(txtCitizenId.getText())) {
+            service.alertMessage("กรุณากรอกหมายเลขประจำตัวประชาชนให้ครบ 13 หลัก");
+        } else {
+            try {
+                if (service.findCusById(txtCitizenId.getText()) != null) {
+                    setCustomer();
+                    System.out.println("เจอ");
+                } else {
+                    service.alertMessage("กรุณากรอกข้อมูลเพิ่มเติม");
+                    txtCitizenId.setText("");
+                }
+            } catch (Exception e) {
+                service.alertMessage("ไม่สามารถเชื่อมต่อข้อมูลในดาต้าเบสได้");
+            }
+        }
+
+    }//GEN-LAST:event_btnVerifyActionPerformed
+
+    private void txtReturnDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtReturnDateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtReturnDateActionPerformed
+
+    private void txtReturnDateFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtReturnDateFocusGained
+        // TODO add your handling code here:
+        txtReturnDate.setText("");
+    }//GEN-LAST:event_txtReturnDateFocusGained
+
+    private void txtReturnDateFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtReturnDateFocusLost
+        // TODO add your handling code here:
+        if (txtReturnDate.getText().equals("")) {
+            txtReturnDate.setText("dd/mm/yyyy");
+        }
+    }//GEN-LAST:event_txtReturnDateFocusLost
+
+    public void get() {
+        List<Bike> bikeList = service.getAllBikeItr();
+        Iterator<Bike> cursor = bikeList.iterator();
+
         try {
             while (cursor.hasNext()) {
                 Bike bike = cursor.next();
                 String bikeId = bike.getBikeId();
                 String bikeStatus = bike.getBikeStatus();
-                
+
             }
         } finally {
-            cursor.close();
+
         }
-        cursor.close();
     }
+
+    public void clear() {
+        txtBikeId.setText("");
+        txtCitizenId.setText("");
+        
+        txtFName.setText("");
+        txtRentId.setText("");
+        txtLName.setText("");
+
+        txtFee.setText("");
+        txtTel.setText("");
+
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -505,6 +659,7 @@ public class FormRent extends javax.swing.JFrame {
     private javax.swing.JButton btnAll;
     private javax.swing.JButton btnRent;
     private javax.swing.JButton btnSearch;
+    private javax.swing.JButton btnVerify;
     private javax.swing.JPanel head;
     private javax.swing.JLabel iconLogo;
     private javax.swing.JScrollPane jScrollPane1;

@@ -6,9 +6,10 @@
 package bikerental;
 
 import com.google.gson.Gson;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import static com.mongodb.client.model.Filters.eq;
+import java.util.ArrayList;
+import java.util.List;
 import org.bson.Document;
 
 /**
@@ -16,15 +17,15 @@ import org.bson.Document;
  * @author anupongpummok
  */
 public class InvoiceDao {
-    private static MongoCollection<Invoice> invoiceCol;
+     static MongoCollection<Invoice> invoiceCol;
     
     public InvoiceDao() {
-        invoiceCol = Database.getDatabase().getCollection("invoice", Invoice.class);
+        invoiceCol = Database.getDatabase().getCollection("invoices", Invoice.class);
     }
     
     public boolean insertVoice(Invoice invoice) {
         try {
-            invoiceCol.insertOne(invoice);     
+            invoiceCol.insertOne(invoice);
             return true;
         } catch (Exception e) {
             return false;
@@ -32,19 +33,19 @@ public class InvoiceDao {
     }
     
     public Invoice findById(String invoiceId) {
-        return invoiceCol.find(eq("id", invoiceId)).first();
+        return invoiceCol.find(eq("invoiceId", invoiceId)).first();
 
     }
     
-    public FindIterable<Invoice> findAll() {
-        return invoiceCol.find();
+    public List<Invoice> findAll() {
+        return invoiceCol.find().into(new ArrayList<>());
     }
     
     public boolean switchStatusById(String invoiceId, String status) {
         try {
             if (status.equals("กำลังเช่า")) {
                 invoiceCol.updateOne(
-                        eq("id", invoiceId), 
+                        eq("invoiceId", invoiceId), 
                         new Document("$set", 
                                 new Document("status", "ว่าง")
                         )
@@ -52,7 +53,7 @@ public class InvoiceDao {
 
             } else if (status.equals("ว่าง")) {
                 invoiceCol.updateOne(
-                        eq("id", invoiceId), 
+                        eq("invoiceId", invoiceId), 
                         new Document("$set", 
                                 new Document("status", "กำลังเช่า")
                         )
@@ -68,11 +69,15 @@ public class InvoiceDao {
         Gson gson = new Gson();
         Document invoiceDoc = Document.parse(gson.toJson(newInvoice));
         try {
-            invoiceCol.updateOne( eq("id", invoiceId), invoiceDoc);
+            invoiceCol.updateOne( eq("invoiceId", invoiceId), invoiceDoc);
             return true;
         } catch (Exception e) {
             return false;
         }
+    }
+    
+    public int incrementInvoiceId() {
+        return (int) invoiceCol.count()+1;
     }
     
 

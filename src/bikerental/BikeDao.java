@@ -5,9 +5,10 @@
  */
 package bikerental;
 
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import static com.mongodb.client.model.Filters.eq;
+import java.util.ArrayList;
+import java.util.List;
 import org.bson.Document;
 
 /**
@@ -35,8 +36,8 @@ public class BikeDao {
         return bikeCol.find(eq("bikeId", bikeId)).first();
     }
     
-    public FindIterable<Bike> getAllBike() {
-        return bikeCol.find();
+    public List<Bike> getAllBike() {
+        return bikeCol.find().into(new ArrayList<>());
     }
     
     public boolean switchStatusById(String bikeId, String status) {
@@ -45,7 +46,7 @@ public class BikeDao {
                 bikeCol.updateOne(
                         eq("bikeId", bikeId), 
                         new Document("$set", 
-                                new Document("status", "ว่าง")
+                                new Document("bikeStatus", "ว่าง")
                         )
                 );
 
@@ -53,7 +54,7 @@ public class BikeDao {
                 bikeCol.updateOne(
                         eq("bikeId", bikeId), 
                         new Document("$set", 
-                                new Document("status", "ถูกเช่า")
+                                new Document("bikeStatus", "ถูกเช่า")
                         )
                 );
             }
@@ -62,6 +63,5 @@ public class BikeDao {
             return false;
         }
     }
-    
     
 }

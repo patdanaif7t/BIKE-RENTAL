@@ -5,7 +5,9 @@
  */
 package bikerental;
 
-import com.mongodb.client.MongoCursor;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -17,30 +19,49 @@ public class FormMenuMain extends javax.swing.JFrame {
     
     public FormMenuMain() {
         initComponents();
-        Database.init();
         service = new ServiceRent();
         showTable();
     }
     
     public void showTable() {
-        MongoCursor<Bike> cursor = service.getAllBikeItr();
+        List<Bike> bikeList = service.getAllBikeItr();
+        Iterator<Bike> bikeCursor = bikeList.iterator();
         
         String[] column = {"BikeId", "BikeStatus"};
         
         DefaultTableModel model = new DefaultTableModel(column, 0);
         
         try {
-            while (cursor.hasNext()) {
-                Bike bike = cursor.next();
+            while (bikeCursor.hasNext()) {
+                Bike bike = bikeCursor.next();
                 String bikeId = bike.getBikeId();
                 String bikeStatus = bike.getBikeStatus();
                 model.addRow(new Object[]{bikeId, bikeStatus});
             }
         } finally {
-            cursor.close();
+            
         }
         tableBikeStatus.setModel(model);
-        cursor.close();
+    }
+    
+    public void search(String bikeSearchId) {
+        try {
+            Bike cursor = service.findBikeById(bikeSearchId);
+
+            String[] column = {"BikeId", "BikeStatus"};
+
+            DefaultTableModel model = new DefaultTableModel(column, 0);
+            Bike bike = cursor;
+            String bikeId = bike.getBikeId();
+            String bikeStatus = bike.getBikeStatus();
+            model.addRow(new Object[]{bikeId, bikeStatus});
+
+            tableBikeStatus.setModel(model);
+        } catch (Exception e) {
+            service.alertMessage("ไม่มีรถคันนี้ในระบบ");
+            txtSearch.setText("");
+        }
+
     }
 
     /**
@@ -268,10 +289,17 @@ public class FormMenuMain extends javax.swing.JFrame {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
+        if (!service.isFill(txtSearch.getText())) {
+            System.out.println("ไม่กรอก");
+        } else {
+            search(txtSearch.getText());
+        }
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAllActionPerformed
         // TODO add your handling code here:
+        showTable();
+        txtSearch.setText("");
     }//GEN-LAST:event_btnAllActionPerformed
 
     /**

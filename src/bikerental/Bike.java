@@ -12,10 +12,25 @@ package bikerental;
 public final class Bike {
     private String bikeId;
     private String bikeStatus;
+    
+    public Bike() {
+        
+    }
 
+    public Bike(String bikeId, String bikeStatus) {
+        this.bikeId = bikeId;
+        this.bikeStatus = bikeStatus;
+    }
+
+    public Bike(String bikeId) {
+        this.bikeId = bikeId;
+    }
+    
     @Override
     public String toString() {
         return "Bike{" + "bikeId=" + bikeId + ", bikeStatus=" + bikeStatus + '}';
+       
+        
     }
 
     public String getBikeId() {

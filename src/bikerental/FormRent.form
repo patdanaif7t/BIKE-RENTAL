@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
     <Menu class="javax.swing.JMenuBar" name="menuBar">
       <Properties>
@@ -282,7 +282,7 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="540" y="110" width="100" height="40"/>
+              <AbsoluteConstraints x="540" y="110" width="130" height="40"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -306,7 +306,7 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="620" y="110" width="120" height="40"/>
+              <AbsoluteConstraints x="660" y="110" width="140" height="40"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -325,7 +325,7 @@
             <Component class="javax.swing.JTable" name="tableBikeStatus">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="TH Sarabun New" size="18" style="1"/>
+                  <Font name="TH Sarabun New" size="24" style="1"/>
                 </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="4" rowCount="4">
@@ -345,39 +345,39 @@
         <Component class="javax.swing.JLabel" name="labelRentId">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="TH Sarabun New" size="24" style="0"/>
+              <Font name="TH Sarabun New" size="24" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="&#xe23;&#xe2b;&#xe31;&#xe2a;&#xe01;&#xe32;&#xe23;&#xe40;&#xe0a;&#xe48;&#xe32;-&#xe04;&#xe37;&#xe19; :"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="470" y="350" width="-1" height="-1"/>
+              <AbsoluteConstraints x="490" y="350" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
         <Component class="javax.swing.JLabel" name="labelRentDate">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="TH Sarabun New" size="24" style="0"/>
+              <Font name="TH Sarabun New" size="24" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="&#xe27;&#xe31;&#xe19;&#xe17;&#xe35;&#xe48;&#xe40;&#xe0a;&#xe48;&#xe32; :"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="520" y="390" width="-1" height="-1"/>
+              <AbsoluteConstraints x="540" y="390" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
         <Component class="javax.swing.JLabel" name="labelCitizenId">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="TH Sarabun New" size="24" style="0"/>
+              <Font name="TH Sarabun New" size="24" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="&#xe40;&#xe25;&#xe02;&#xe1b;&#xe23;&#xe30;&#xe08;&#xe33;&#xe15;&#xe31;&#xe27;&#xe1b;&#xe23;&#xe30;&#xe0a;&#xe32;&#xe0a;&#xe19; :"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="70" y="390" width="160" height="-1"/>
+              <AbsoluteConstraints x="80" y="390" width="170" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -395,14 +395,14 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="610" y="520" width="-1" height="-1"/>
+              <AbsoluteConstraints x="640" y="520" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
         <Component class="javax.swing.JLabel" name="labelFName">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="TH Sarabun New" size="24" style="0"/>
+              <Font name="TH Sarabun New" size="24" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="&#xe0a;&#xe37;&#xe48;&#xe2d; :"/>
           </Properties>
@@ -415,77 +415,78 @@
         <Component class="javax.swing.JLabel" name="labelBikeId">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="TH Sarabun New" size="24" style="0"/>
+              <Font name="TH Sarabun New" size="24" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="&#xe23;&#xe2b;&#xe31;&#xe2a;&#xe23;&#xe16; :"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="170" y="350" width="-1" height="-1"/>
+              <AbsoluteConstraints x="160" y="350" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
         <Component class="javax.swing.JLabel" name="labelLName">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="TH Sarabun New" size="24" style="0"/>
+              <Font name="TH Sarabun New" size="24" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="&#xe19;&#xe32;&#xe21;&#xe2a;&#xe01;&#xe38;&#xe25; :"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="160" y="470" width="-1" height="-1"/>
+              <AbsoluteConstraints x="170" y="470" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
         <Component class="javax.swing.JLabel" name="labelTel">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="TH Sarabun New" size="24" style="0"/>
+              <Font name="TH Sarabun New" size="24" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="&#xe2b;&#xe21;&#xe32;&#xe22;&#xe40;&#xe25;&#xe02;&#xe42;&#xe17;&#xe23;&#xe28;&#xe31;&#xe1e;&#xe17;&#xe4c; :"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="100" y="510" width="-1" height="-1"/>
+              <AbsoluteConstraints x="110" y="510" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
         <Component class="javax.swing.JLabel" name="labelReturnDate">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="TH Sarabun New" size="24" style="0"/>
+              <Font name="TH Sarabun New" size="24" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="&#xe27;&#xe31;&#xe19;&#xe17;&#xe35;&#xe48;&#xe04;&#xe37;&#xe19; :"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="520" y="430" width="-1" height="-1"/>
+              <AbsoluteConstraints x="540" y="430" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
         <Component class="javax.swing.JLabel" name="labelFee">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="TH Sarabun New" size="24" style="0"/>
+              <Font name="TH Sarabun New" size="24" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="&#xe04;&#xe48;&#xe32;&#xe40;&#xe0a;&#xe48;&#xe32; :"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="530" y="470" width="-1" height="-1"/>
+              <AbsoluteConstraints x="550" y="470" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
         <Component class="javax.swing.JTextField" name="txtRentId">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="TH Sarabun New" size="24" style="0"/>
             </Property>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="580" y="350" width="157" height="-1"/>
+              <AbsoluteConstraints x="610" y="350" width="157" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -499,38 +500,42 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="580" y="390" width="157" height="-1"/>
+              <AbsoluteConstraints x="610" y="390" width="157" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
         <Component class="javax.swing.JTextField" name="txtReturnDate">
           <Properties>
-            <Property name="editable" type="boolean" value="false"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="TH Sarabun New" size="24" style="0"/>
             </Property>
+            <Property name="text" type="java.lang.String" value="dd/MM/yyyy"/>
           </Properties>
           <Events>
+            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtReturnDateFocusGained"/>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtReturnDateFocusLost"/>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtReturnDateActionPerformed"/>
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="580" y="430" width="157" height="-1"/>
+              <AbsoluteConstraints x="610" y="430" width="157" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
         <Component class="javax.swing.JTextField" name="txtFee">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="TH Sarabun New" size="24" style="0"/>
             </Property>
+            <Property name="text" type="java.lang.String" value="200"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtFeeActionPerformed"/>
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="580" y="470" width="157" height="-1"/>
+              <AbsoluteConstraints x="610" y="470" width="157" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -542,7 +547,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="230" y="510" width="157" height="-1"/>
+              <AbsoluteConstraints x="260" y="510" width="157" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -554,7 +559,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="230" y="470" width="157" height="-1"/>
+              <AbsoluteConstraints x="260" y="470" width="157" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -566,7 +571,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="230" y="430" width="157" height="-1"/>
+              <AbsoluteConstraints x="260" y="430" width="157" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -578,12 +583,13 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="230" y="390" width="157" height="-1"/>
+              <AbsoluteConstraints x="260" y="390" width="157" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
         <Component class="javax.swing.JTextField" name="txtBikeId">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="TH Sarabun New" size="24" style="0"/>
             </Property>
@@ -594,7 +600,20 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="230" y="350" width="157" height="-1"/>
+              <AbsoluteConstraints x="260" y="350" width="157" height="-1"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnVerify">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="&#xe15;&#xe23;&#xe27;&#xe08;&#xe2a;&#xe2d;&#xe1a;"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnVerifyActionPerformed"/>
+          </Events>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+              <AbsoluteConstraints x="420" y="400" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>

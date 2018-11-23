@@ -16,6 +16,7 @@ public class BikeRental {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        Database.init();
         new FormMenuMain().show();
     }
     
