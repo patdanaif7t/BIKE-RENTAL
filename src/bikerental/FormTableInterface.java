@@ -11,4 +11,5 @@ package bikerental;
  */
 public interface FormTableInterface {
     void renderTable();
+    void alertMessage(String message);
 }

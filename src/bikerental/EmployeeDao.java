@@ -16,32 +16,36 @@ import org.bson.Document;
  *
  * @author firstx
  */
-public class EmployeeDao implements DaoInterface<Employee>{
+public class EmployeeDao implements DaoInterface<Employee> {
+
     private static MongoCollection<Employee> empCol;
-    
+
     public EmployeeDao() {
         empCol = Database.getDatabase().getCollection("employees", Employee.class);
-    } 
+    }
 
     @Override
     public boolean insert(Employee employee) {
         try {
-            empCol.insertOne(employee);     
+            empCol.insertOne(employee);
             return true;
         } catch (Exception e) {
             return false;
-        }    }
+        }
+    }
 
     @Override
     public boolean update(String employeeId, Employee newEmployee) {
         Gson gson = new Gson();
         Document newEmp = Document.parse(gson.toJson(newEmployee));
+        Document employeeDoc = new Document("$set", newEmp);
         try {
-            empCol.updateOne(eq("employeeId", employeeId), newEmp);
+            empCol.updateOne(eq("employeeId", employeeId), employeeDoc);
             return true;
         } catch (Exception e) {
             return false;
-        }    }
+        }
+    }
 
     @Override
     public boolean delete(String employeeId) {
@@ -55,12 +59,13 @@ public class EmployeeDao implements DaoInterface<Employee>{
     }
 
     @Override
-    public Employee getById(String employeeId) {
+    public Employee findById(String employeeId) {
         return empCol.find(eq("employeeId", employeeId)).first();
     }
 
     @Override
-    public List<Employee> getAll() {
+    public List<Employee> findAll() {
         return empCol.find().into(new ArrayList<>());
     }
+
 }

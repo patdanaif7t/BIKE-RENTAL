@@ -15,7 +15,7 @@ public interface DaoInterface<T> {
     public boolean insert(T object);
     public boolean update(String id, T newObject);
     public boolean delete(String id);
-    public T getById(String id);
-    public List<T> getAll();
+    public T findById(String id);
+    public List<T> findAll();
     
 }

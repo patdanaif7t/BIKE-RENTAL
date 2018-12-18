@@ -8,7 +8,9 @@ package bikerental;
 import com.google.gson.Gson;
 import com.mongodb.client.MongoCollection;
 import static com.mongodb.client.model.Filters.eq;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.bson.Document;
 
@@ -77,14 +79,34 @@ public class InvoiceDao implements DaoInterface<Invoice>{
     }
 
     @Override
-    public Invoice getById(String invoiceId) {
+    public Invoice findById(String invoiceId) {
         return invoiceCol.find(eq("invoiceId", invoiceId)).first();
     }
 
     @Override
-    public List<Invoice> getAll() {
+    public List<Invoice> findAll() {
         return invoiceCol.find().into(new ArrayList<>());
     }
     
+    public Invoice findByBikeId(String bikId) {
+        return invoiceCol.find(eq("bikeId", bikId)).first();
+    }
+    
+    public boolean updateReturn(String invoiceId, String status, float fine){
+       String date = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
+       try {
+            invoiceCol.updateOne(
+                eq("invoiceId", invoiceId), 
+                new Document("$set", 
+                        new Document("status", "คืนแล้ว")
+                                .append("fine", fine)
+                                .append("dateReturnReal", date)
+                )
+            );
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
 }

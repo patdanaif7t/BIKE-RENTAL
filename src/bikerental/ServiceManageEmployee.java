@@ -12,37 +12,29 @@ import java.util.List;
  * @author firstx
  */
 public class ServiceManageEmployee {
-    EmployeeDao empDao;
+    EmployeeDao employeeDao;
     
     public ServiceManageEmployee(){
-        empDao = new EmployeeDao();
+        employeeDao = new EmployeeDao();
     }
     
-    public boolean isFill(String field) {
-        return !field.equals("");
+    public Employee findEmployeeById(String employeeId) {
+        return employeeDao.findById(employeeId);
     }
     
-    public boolean isFieldAllFill() {
-        return true;
+    public List<Employee> findAllEmployee() {
+        return employeeDao.findAll();
     }
     
-    public Employee search(String emplyeeId) {
-        return empDao.getById(emplyeeId);
+    public boolean addEmployee(Employee employee) {
+        return employeeDao.insert(employee);
     }
     
-    public List<Employee> searchAll() {
-        return empDao.getAll();
+    public boolean editEmployeeById(String employeeId, Employee newEmployee) {
+        return employeeDao.update(employeeId, newEmployee);
     }
     
-    public boolean insertEmployee(Employee employee) {
-        return empDao.insert(employee);
-    }
-    
-    public boolean editEmployee(String employeeId, Employee newEmployee) {
-        return empDao.update(employeeId, newEmployee);
-    }
-    
-    public boolean deleteEmployee(String employeeId) {
-        return empDao.delete(employeeId);
+    public boolean removeEmployeeById(String employeeId) {
+        return employeeDao.delete(employeeId);
     }
 }

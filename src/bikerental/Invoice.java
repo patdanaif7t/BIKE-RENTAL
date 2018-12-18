@@ -37,6 +37,10 @@ public final class Invoice {
         this.fee = fee;
     }
     
+    public Invoice() {
+        
+    }
+    
     public String getInvoiceId() {
         return invoiceId;
     }

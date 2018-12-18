@@ -10,58 +10,54 @@ package bikerental;
  * @author anupongpummok
  */
 public final class Customer {
-    private String cusCitizenId;
-    private String cusTel;
-    private String cusFName;
-    private String cusLName;
-    
+
+    private String customerCitizenId;
+    private String customerFName;
+    private String customerLName;
+    private String customerTel;
+
     public Customer() {
-        
+
     }
 
-    public Customer(String cusCitizenId, String cusFName, String cusLName, String cusTel) {
-        this.cusCitizenId = cusCitizenId;
-        this.cusTel = cusTel;
-        this.cusFName = cusFName;
-        this.cusLName = cusLName;
+    public Customer(String customerCitizenId, String customerFName, String customerLName, String customerTel) {
+        this.customerCitizenId = customerCitizenId;
+        this.customerFName = customerFName;
+        this.customerLName = customerLName;
+        this.customerTel = customerTel;
     }
 
-    public String getCusCitizenId() {
-        return cusCitizenId;
+    public String getCustomerCitizenId() {
+        return customerCitizenId;
     }
 
-    public void setCusCitizenId(final String cusCitizenId) {
-        this.cusCitizenId = cusCitizenId;
+    public void setCustomerCitizenId(String customerCitizenId) {
+        this.customerCitizenId = customerCitizenId;
     }
 
-    @Override
-    public String toString() {
-        return "Customer{" + "cusCitizenId=" + cusCitizenId + ", cusTel=" + cusTel + ", cusFName=" + cusFName + ", cusLName=" + cusLName + '}';
+    public String getCustomerFName() {
+        return customerFName;
     }
 
-    public String getCusTel() {
-        return cusTel;
+    public void setCustomerFName(String customerFName) {
+        this.customerFName = customerFName;
     }
 
-    public void setCusTel(final String cusTel) {
-        this.cusTel = cusTel;
+    public String getCustomerLName() {
+        return customerLName;
     }
 
-    public String getCusFName() {
-        return cusFName;
+    public void setCustomerLName(String customerLName) {
+        this.customerLName = customerLName;
     }
 
-    public void setCusFName(final String cusFName) {
-        this.cusFName = cusFName;
+    public String getCustomerTel() {
+        return customerTel;
     }
 
-    public String getCusLName() {
-        return cusLName;
+    public void setCustomerTel(String customerTel) {
+        this.customerTel = customerTel;
     }
 
-    public void setCusLName(final String cusLName) {
-        this.cusLName = cusLName;
-    }
-    
-    
+
 }

@@ -5,46 +5,68 @@
  */
 package bikerental;
 
-import java.text.DateFormat;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
-import org.bson.types.ObjectId;
 
 /**
  *
  * @author firstx
  */
-public class FormRent extends javax.swing.JFrame implements FormTableInterface{
+public class FormRent extends javax.swing.JFrame implements FormTableInterface {
 
-    ServiceRent service;
-    
+    private final ServiceRent service;
+
     /**
      * Creates new form FormRent
      */
     public FormRent() {
 
-        // System.out.println(date.getDate()+date.getMonth()+date.getY);
         initComponents();
         service = new ServiceRent();
         renderTable();
-        
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-        //Date currentDate = sdf.parse("06/24/2017");
+        txtRentId.setText("R" + service.invDao.incrementInvoiceId());
+        txtRentDate.setText(getCurrentDate());
+        showDate();
+        showTime();
 
-        txtRentId.setText("R"+service.invDao.incrementInvoiceId());
-        txtRentDate.setText(service.getCurrentDate());
+    }
 
+    void showDate() {
+        Date d = new Date();
+        SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy");
+        labelShowDate.setText(s.format(d));
+
+    }
+
+    void showTime() {
+        new Timer(0, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Date d = new Date();
+                SimpleDateFormat s = new SimpleDateFormat("hh:mm:ss a");
+                labelShowTime.setText(s.format(d));
+            }
+
+        }
+        ).start();
     }
 
     @Override
     public void renderTable() {
-        List<Bike> bikeList = service.getAllBikeItr();
+        List<Bike> bikeList = service.getAllBike();
         Iterator<Bike> cursor = bikeList.iterator();
 
-        String[] column = {"BikeId", "BikeStatus"};
+        String[] column = {"รหัสรถ", "สถานะ"};
+        tableBikeStatus.getTableHeader().setFont(new Font("TH Sarabun New", Font.BOLD, 18));
 
         DefaultTableModel model = new DefaultTableModel(column, 0);
 
@@ -62,17 +84,17 @@ public class FormRent extends javax.swing.JFrame implements FormTableInterface{
     }
 
     public void setCustomer() {
-        List<Customer> customerList = service.getAllCustomerItr();
+        List<Customer> customerList = service.getAllCustomer();
         Iterator<Customer> cursor = customerList.iterator();
 
         try {
             while (cursor.hasNext()) {
                 Customer customer = cursor.next();
-                System.out.println(customer.getCusCitizenId());
-                if (customer.getCusCitizenId().equals(txtCitizenId.getText())) {
-                    txtFName.setText(customer.getCusFName());
-                    txtLName.setText(customer.getCusLName());
-                    txtTel.setText(customer.getCusTel());
+                System.out.println(customer.getCustomerCitizenId());
+                if (customer.getCustomerCitizenId().equals(txtCitizenId.getText())) {
+                    txtFName.setText(customer.getCustomerFName());
+                    txtLName.setText(customer.getCustomerLName());
+                    txtTel.setText(customer.getCustomerTel());
                 }
             }
 
@@ -81,11 +103,12 @@ public class FormRent extends javax.swing.JFrame implements FormTableInterface{
         }
     }
 
-    public void search(String bikeSearchId) {
+    public void search() {
         try {
-            Bike cursor = service.findBikeById(bikeSearchId);
+            Bike cursor = service.findBikeById(txtSearch.getText());
 
-            String[] column = {"BikeId", "BikeStatus"};
+            String[] column = {"รหัสรถ", "สถานะ"};
+            tableBikeStatus.getTableHeader().setFont(new Font("TH Sarabun New", Font.BOLD, 18));
 
             DefaultTableModel model = new DefaultTableModel(column, 0);
             Bike bike = cursor;
@@ -95,10 +118,54 @@ public class FormRent extends javax.swing.JFrame implements FormTableInterface{
 
             tableBikeStatus.setModel(model);
         } catch (Exception e) {
-            service.alertMessage("ไม่มีรถคันนี้ในระบบ");
+            alertMessage("ไม่มีรหัสรถคันนี้อยู่ในระบบ");
             txtSearch.setText("");
         }
 
+    }
+
+    public boolean isFill(String field) {
+        return !field.equals("");
+    }
+
+    public static String getCurrentDate() {
+        return new SimpleDateFormat("dd/MM/yyyy").format(new Date());
+    }
+
+    public boolean isFieldAllFill(String bikeId, String citizenId, String fName, String lName, String Tel, String rentId, String rentDate, String returnDate, String fee) {
+
+        if (!isFill(bikeId)
+                || !isFill(citizenId)
+                || !isFill(fName)
+                || !isFill(lName)
+                || !isFill(Tel)
+                || !isFill(rentId)
+                || !isFill(rentDate)
+                || !isFill(returnDate)
+                || !isFill(fee)) {
+            return false; //กรอกข้อมูลไม่ครบ
+        } else {
+            return true; //กรอกข้อมูลครบ
+        }
+
+    }
+
+    public boolean isCitizenIdValid(String citizenId) {
+        return citizenId.length() == 13;
+    }
+
+    public boolean isBikeAvailable(Bike bike) {
+        return bike.getBikeStatus().equals("ว่าง");
+    }
+
+    public boolean isTelvalid(String telField) {
+        return telField.length() == 10;
+    }
+
+    public void alertMessage(String message) {
+        JLabel label = new JLabel(message);
+        label.setFont(new Font("TH Sarabun New", Font.BOLD, 18));
+        JOptionPane.showMessageDialog(null, label, "แจ้งเตือน", JOptionPane.DEFAULT_OPTION);
     }
 
     /**
@@ -146,12 +213,14 @@ public class FormRent extends javax.swing.JFrame implements FormTableInterface{
         menuMainMenu = new javax.swing.JMenu();
         menuBikeInfo = new javax.swing.JMenu();
         menuCusInfo = new javax.swing.JMenu();
+        menuEmployeeInfo = new javax.swing.JMenu();
         menuRentBike = new javax.swing.JMenu();
         menuReturnBike = new javax.swing.JMenu();
-        menuIncome = new javax.swing.JMenu();
         menuLogout = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("การเช่า");
+        setResizable(false);
 
         head.setBackground(new java.awt.Color(255, 255, 255));
         head.setMinimumSize(new java.awt.Dimension(900, 600));
@@ -166,7 +235,7 @@ public class FormRent extends javax.swing.JFrame implements FormTableInterface{
         labelShowTime.setText("HH:MM:SS A");
         head.add(labelShowTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, -1, -1));
 
-        iconLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/R (1).png"))); // NOI18N
+        iconLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/logo.png"))); // NOI18N
         head.add(iconLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, -1, -1));
 
         labelShowDate.setFont(new java.awt.Font("TH Sarabun New", 1, 18)); // NOI18N
@@ -261,6 +330,7 @@ public class FormRent extends javax.swing.JFrame implements FormTableInterface{
         head.add(labelCitizenId, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 390, 170, -1));
 
         btnRent.setFont(new java.awt.Font("TH Sarabun New", 0, 24)); // NOI18N
+        btnRent.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/rent.png"))); // NOI18N
         btnRent.setText("เช่ารถ");
         btnRent.setBorderPainted(false);
         btnRent.setContentAreaFilled(false);
@@ -305,7 +375,6 @@ public class FormRent extends javax.swing.JFrame implements FormTableInterface{
         head.add(txtRentDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 390, 157, -1));
 
         txtReturnDate.setFont(new java.awt.Font("TH Sarabun New", 0, 24)); // NOI18N
-        txtReturnDate.setText("dd/MM/yyyy");
         txtReturnDate.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtReturnDateFocusGained(evt);
@@ -341,6 +410,11 @@ public class FormRent extends javax.swing.JFrame implements FormTableInterface{
         head.add(txtFName, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 430, 157, -1));
 
         txtCitizenId.setFont(new java.awt.Font("TH Sarabun New", 0, 24)); // NOI18N
+        txtCitizenId.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCitizenIdFocusLost(evt);
+            }
+        });
         head.add(txtCitizenId, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 390, 157, -1));
 
         txtBikeId.setEditable(false);
@@ -381,11 +455,34 @@ public class FormRent extends javax.swing.JFrame implements FormTableInterface{
         menuBikeInfo.setBorder(null);
         menuBikeInfo.setText("ข้อมูลรถ");
         menuBikeInfo.setFont(new java.awt.Font("TH Sarabun New", 1, 18)); // NOI18N
+        menuBikeInfo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuBikeInfoMouseClicked(evt);
+            }
+        });
         menuBar.add(menuBikeInfo);
 
         menuCusInfo.setText("ข้อมูลลูกค้า");
         menuCusInfo.setFont(new java.awt.Font("TH Sarabun New", 1, 18)); // NOI18N
+        menuCusInfo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuCusInfoMouseClicked(evt);
+            }
+        });
         menuBar.add(menuCusInfo);
+
+        menuEmployeeInfo.setBorder(null);
+        menuEmployeeInfo.setText("ข้อมูลพนักงาน");
+        menuEmployeeInfo.setFont(new java.awt.Font("TH Sarabun New", 1, 18)); // NOI18N
+        menuEmployeeInfo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuEmployeeInfoMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                menuEmployeeInfoMouseEntered(evt);
+            }
+        });
+        menuBar.add(menuEmployeeInfo);
 
         menuRentBike.setBorder(null);
         menuRentBike.setText("การเช่า");
@@ -407,11 +504,6 @@ public class FormRent extends javax.swing.JFrame implements FormTableInterface{
         });
         menuBar.add(menuReturnBike);
 
-        menuIncome.setBorder(null);
-        menuIncome.setText("รายได้");
-        menuIncome.setFont(new java.awt.Font("TH Sarabun New", 1, 18)); // NOI18N
-        menuBar.add(menuIncome);
-
         menuLogout.setBorder(null);
         menuLogout.setText("ออกจากระบบ");
         menuLogout.setFont(new java.awt.Font("TH Sarabun New", 1, 18)); // NOI18N
@@ -428,7 +520,7 @@ public class FormRent extends javax.swing.JFrame implements FormTableInterface{
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(head, javax.swing.GroupLayout.DEFAULT_SIZE, 900, Short.MAX_VALUE)
+            .addComponent(head, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 900, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -441,50 +533,33 @@ public class FormRent extends javax.swing.JFrame implements FormTableInterface{
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void menuMainMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuMainMenuMouseClicked
-        // TODO add your handling code here:
-        new FormMenuMain().show();
-        dispose();
-    }//GEN-LAST:event_menuMainMenuMouseClicked
-
-    private void menuRentBikeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuRentBikeMousePressed
-        // TODO add your handling code here:
-        new FormRent().show();
-        dispose();
-    }//GEN-LAST:event_menuRentBikeMousePressed
-
-    private void menuReturnBikeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuReturnBikeMousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_menuReturnBikeMousePressed
-
-    private void menuLogoutMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuLogoutMousePressed
-
-        // TODO add your handling code here:*/
-    }//GEN-LAST:event_menuLogoutMousePressed
-
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSearchActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
-        if (!service.isFill(txtSearch.getText())) {
+        if (!isFill(txtSearch.getText())) {
             System.out.println("ไม่กรอก");
         } else {
-            search(txtSearch.getText());
+            search();
         }
 
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAllActionPerformed
         // TODO add your handling code here:
-        renderTable();
-        txtSearch.setText("");
+        searchAll();
+
     }//GEN-LAST:event_btnAllActionPerformed
 
-    private void btnRentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRentActionPerformed
-        // TODO add your handling code here:
-        String bikeId = txtBikeId.getText();
+    private void searchAll() {
+        renderTable();
+        txtSearch.setText("");
+    }
+    
+    public void rentBike(){
+         String bikeId = txtBikeId.getText();
         String citizenId = txtCitizenId.getText();
         String fName = txtFName.getText();
         String lName = txtLName.getText();
@@ -496,39 +571,52 @@ public class FormRent extends javax.swing.JFrame implements FormTableInterface{
         String bikeStatus = tableBikeStatus.getModel().getValueAt(tableBikeStatus.getSelectedRow(), 1).toString();
 
         Customer customer = new Customer(citizenId, fName, lName, Tel);
-        Bike bike = new Bike(bikeId, bikeStatus);
-        Invoice invoice = new Invoice(rentId, bikeId, dateRent, dateReturn, bikeStatus, customer, Float.parseFloat(fee));
+        Invoice invoice = new Invoice(rentId, bikeId, dateRent, dateReturn, "ยังไม่คืน", customer, Float.parseFloat(fee));
 
         // ตรวจสอบว่ากรอกข้อมูลครบถ้วนหรือไม่
-        if (!service.isFieldAllFill(bikeId, citizenId, fName, lName, Tel, rentId, dateRent, dateReturn, fee)) {
+        if (!isFieldAllFill(bikeId, citizenId, fName, lName, Tel, rentId, dateRent, dateReturn, fee)) {
 
-            if (!service.isFill(bikeId)) {
+            if (!isFill(bikeId)) {
                 //ไม่ได้เลือกรถในตาราง
-                service.alertMessage("กรุณาเลือกรถที่ต้องการเช่าในตาราง");
+                alertMessage("กรุณาเลือกรถที่ต้องการเช่าในตาราง");
             } else {
                 //กรอกข้อมูลไม่ครบ
-                service.alertMessage("กรุณากรอกข้อมูลให้ครบถ้วน");
+                alertMessage("กรุณากรอกข้อมูลให้ครบถ้วน");
             }
         } else {
             //กรอกข้อมูลครบ
 
             // ตรวจสอบว่าช่องเบอร์โทร กรอกครบ10หลักหรือไม่
-            if (!service.isTelvalid(Tel)) {
+            if (!isTelvalid(Tel)) {
                 //กรอกไม่ครบ
-                service.alertMessage("กรุณากรอกหมายเลขโทรศัพท์จำนวน 10 หลัก");
-            } else if (!service.isCitizenIdValid(citizenId)) {
+                alertMessage("กรุณากรอกหมายเลขโทรศัพท์จำนวน 10 หลัก");
+            } else if (!isCitizenIdValid(citizenId)) {
                 //กรอกบัตรประจำตัวประชาชนไม่ครบ
-                service.alertMessage("กรุณากรอกหมายเลขประจำตัวประชาชนให้ครบ 13 หลัก");
+                alertMessage("กรุณากรอกหมายเลขประจำตัวประชาชนให้ครบ 13 หลัก");
             } else {
                 // กรอกข้อมูลถูกต้อง และ ครบทุกช่อง
                 System.out.println("เช่า");
-                if (service.Rent(bikeId,bikeStatus, customer, invoice)) {
-                    service.alertMessage("เช่าสำเร็จ");
+                if (bikeStatus.equals("ว่าง")) {
+
+                    if (service.Rent(bikeId, bikeStatus, customer, invoice)) {
+                        alertMessage("เช่ารถสำเร็จ");
+                        clear();
+                        renderTable();
+                        txtRentId.setText("R" + service.invDao.incrementInvoiceId());
+                    } else {
+                        alertMessage("เช่าไม่สำเร็จ");
+                        clear();
+                    }
                 } else {
-                    service.alertMessage("เช่าไม่สำเร็จ");
+                    alertMessage("รถคันนี้ถูกเช่าแล้ว");
+                    clear();
                 }
             }
         }
+    }
+    private void btnRentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRentActionPerformed
+        // TODO add your handling code here:
+        rentBike();
 
     }//GEN-LAST:event_btnRentActionPerformed
 
@@ -556,19 +644,19 @@ public class FormRent extends javax.swing.JFrame implements FormTableInterface{
     private void btnVerifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerifyActionPerformed
         // TODO add your handling code here:
 
-        if (!service.isCitizenIdValid(txtCitizenId.getText())) {
-            service.alertMessage("กรุณากรอกหมายเลขประจำตัวประชาชนให้ครบ 13 หลัก");
+        if (!isCitizenIdValid(txtCitizenId.getText())) {
+            alertMessage("กรุณากรอกหมายเลขประจำตัวประชาชนให้ครบ 13 หลัก");
         } else {
             try {
-                if (service.findCusById(txtCitizenId.getText()) != null) {
+                if (service.findCustomerById(txtCitizenId.getText()) != null) {
                     setCustomer();
                     System.out.println("เจอ");
                 } else {
-                    service.alertMessage("กรุณากรอกข้อมูลเพิ่มเติม");
-                    txtCitizenId.setText("");
+                    alertMessage("กรุณากรอกข้อมูลเพิ่มเติม");
+
                 }
             } catch (Exception e) {
-                service.alertMessage("ไม่สามารถเชื่อมต่อข้อมูลในดาต้าเบสได้");
+                alertMessage("ไม่สามารถเชื่อมต่อข้อมูลในดาต้าเบสได้");
             }
         }
 
@@ -590,8 +678,66 @@ public class FormRent extends javax.swing.JFrame implements FormTableInterface{
         }
     }//GEN-LAST:event_txtReturnDateFocusLost
 
+    private void menuMainMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuMainMenuMouseClicked
+        new FormBikeStatus().show();
+        dispose();
+    }//GEN-LAST:event_menuMainMenuMouseClicked
+
+    private void menuBikeInfoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuBikeInfoMouseClicked
+        // TODO add your handling code here:
+        new FormManageBike().show();
+        dispose();
+    }//GEN-LAST:event_menuBikeInfoMouseClicked
+
+    private void menuCusInfoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCusInfoMouseClicked
+        // TODO add your handling code here:
+        new FormShowCustomer().show();
+        dispose();
+    }//GEN-LAST:event_menuCusInfoMouseClicked
+
+    private void menuEmployeeInfoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuEmployeeInfoMouseClicked
+        // TODO add your handling code here:
+        new FormManageEmployee().show();
+        dispose();
+
+    }//GEN-LAST:event_menuEmployeeInfoMouseClicked
+
+    private void menuEmployeeInfoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuEmployeeInfoMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuEmployeeInfoMouseEntered
+
+    private void menuRentBikeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuRentBikeMousePressed
+        // TODO add your handling code here:
+        new FormRent().show();
+        dispose();
+    }//GEN-LAST:event_menuRentBikeMousePressed
+
+    private void menuReturnBikeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuReturnBikeMousePressed
+        new FormReturn().show();
+        dispose();       // TODO add your handling code here:
+    }//GEN-LAST:event_menuReturnBikeMousePressed
+
+    private void menuLogoutMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuLogoutMousePressed
+
+        // TODO add your handling code here:*/
+    }//GEN-LAST:event_menuLogoutMousePressed
+
+    private void txtCitizenIdFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCitizenIdFocusLost
+        // TODO add your handling code here:
+        if (!isCitizenIdValid(txtCitizenId.getText())) {
+            
+        } else {
+            try {
+                if (service.findCustomerById(txtCitizenId.getText()) != null) {
+                    setCustomer();
+                }
+            } catch (Exception e) {
+            }
+        }
+    }//GEN-LAST:event_txtCitizenIdFocusLost
+
     public void get() {
-        List<Bike> bikeList = service.getAllBikeItr();
+        List<Bike> bikeList = service.getAllBike();
         Iterator<Bike> cursor = bikeList.iterator();
 
         try {
@@ -609,12 +755,9 @@ public class FormRent extends javax.swing.JFrame implements FormTableInterface{
     public void clear() {
         txtBikeId.setText("");
         txtCitizenId.setText("");
-        
         txtFName.setText("");
-        txtRentId.setText("");
         txtLName.setText("");
-
-        txtFee.setText("");
+        txtReturnDate.setText("");
         txtTel.setText("");
 
     }
@@ -679,7 +822,7 @@ public class FormRent extends javax.swing.JFrame implements FormTableInterface{
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu menuBikeInfo;
     private javax.swing.JMenu menuCusInfo;
-    private javax.swing.JMenu menuIncome;
+    private javax.swing.JMenu menuEmployeeInfo;
     private javax.swing.JMenu menuLogout;
     private javax.swing.JMenu menuMainMenu;
     private javax.swing.JMenu menuRentBike;

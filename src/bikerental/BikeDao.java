@@ -62,17 +62,23 @@ public class BikeDao implements DaoInterface<Bike> {
     }
 
     @Override
-    public boolean delete(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean delete(String bikeId) {
+        Document bike = new Document("bikeId", bikeId);
+        try {
+            bikeCol.deleteOne(bike);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
-    public Bike getById(String bikeId) {
+    public Bike findById(String bikeId) {
         return bikeCol.find(eq("bikeId", bikeId)).first();
     }
 
     @Override
-    public List<Bike> getAll() {
+    public List<Bike> findAll() {
         return bikeCol.find().into(new ArrayList<>());
     }
     

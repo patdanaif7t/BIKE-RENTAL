@@ -5,50 +5,56 @@
  */
 package bikerental;
 
-import java.util.ArrayList;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 
+public class FormBikeStatus extends javax.swing.JFrame implements FormTableInterface {
 
+    private final ServiceBikeStatus service;
 
-public class FormMenuMain extends javax.swing.JFrame {
-
-    ServiceRent service;
-   
-    
-    public FormMenuMain() {
+    public FormBikeStatus() {
         initComponents();
-        service = new ServiceRent();
-        showTable();
+        service = new ServiceBikeStatus();
+        renderTable();
+        showDate();
+        showTime();
     }
-    
-    public void showTable() {
-        List<Bike> bikeList = service.getAllBikeItr();
-        Iterator<Bike> bikeCursor = bikeList.iterator();
-        
-        String[] column = {"BikeId", "BikeStatus"};
-        
-        DefaultTableModel model = new DefaultTableModel(column, 0);
-        
-        try {
-            while (bikeCursor.hasNext()) {
-                Bike bike = bikeCursor.next();
-                String bikeId = bike.getBikeId();
-                String bikeStatus = bike.getBikeStatus();
-                model.addRow(new Object[]{bikeId, bikeStatus});
-            }
-        } finally {
-            
-        }
-        tableBikeStatus.setModel(model);
-    }
-    
-    public void search(String bikeSearchId) {
-        try {
-            Bike cursor = service.findBikeById(bikeSearchId);
 
-            String[] column = {"BikeId", "BikeStatus"};
+    void showDate() {
+        Date d = new Date();
+        SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy");
+        labelShowDate.setText(s.format(d));
+
+    }
+
+    void showTime() {
+        new Timer(0, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Date d = new Date();
+                SimpleDateFormat s = new SimpleDateFormat("hh:mm:ss a");
+                labelShowTime.setText(s.format(d));
+            }
+
+        }
+        ).start();
+    }
+
+    public void search() {
+        try {
+            Bike cursor = service.findBikeById(txtSearch.getText());
+
+            tableBikeStatus.getTableHeader().setFont(new Font("TH Sarabun New", Font.BOLD, 18));
+        String[] column = {"รหัสรถ", "สถานะ"};
 
             DefaultTableModel model = new DefaultTableModel(column, 0);
             Bike bike = cursor;
@@ -58,10 +64,18 @@ public class FormMenuMain extends javax.swing.JFrame {
 
             tableBikeStatus.setModel(model);
         } catch (Exception e) {
-            service.alertMessage("ไม่มีรถคันนี้ในระบบ");
+            alertMessage("ไม่พบรหัสรถคันนี้ในระบบ");
             txtSearch.setText("");
         }
 
+    }
+
+    @Override
+    public void alertMessage(String message) {
+        JLabel label = new JLabel(message);
+        label.setFont(new Font("TH Sarabun New", Font.BOLD, 18));
+        JOptionPane.showMessageDialog(null, label, "แจ้งเตือน", JOptionPane.DEFAULT_OPTION);
+        
     }
 
     /**
@@ -89,12 +103,13 @@ public class FormMenuMain extends javax.swing.JFrame {
         menuMainMenu = new javax.swing.JMenu();
         menuBikeInfo = new javax.swing.JMenu();
         menuCusInfo = new javax.swing.JMenu();
+        menuEmployeeInfo = new javax.swing.JMenu();
         menuRentBike = new javax.swing.JMenu();
         menuReturnBike = new javax.swing.JMenu();
-        menuIncome = new javax.swing.JMenu();
         menuLogout = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("เมนูหลัก");
         setResizable(false);
 
         head.setBackground(new java.awt.Color(255, 255, 255));
@@ -110,7 +125,7 @@ public class FormMenuMain extends javax.swing.JFrame {
         labelShowTime.setText("HH:MM:SS A");
         head.add(labelShowTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, -1, -1));
 
-        iconLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/R (1).png"))); // NOI18N
+        iconLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/logo.png"))); // NOI18N
         head.add(iconLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, -1, -1));
 
         labelShowDate.setFont(new java.awt.Font("TH Sarabun New", 1, 18)); // NOI18N
@@ -171,7 +186,7 @@ public class FormMenuMain extends javax.swing.JFrame {
         });
         head.add(btnAll, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 110, 120, 40));
 
-        tableBikeStatus.setFont(new java.awt.Font("TH Sarabun New", 1, 18)); // NOI18N
+        tableBikeStatus.setFont(new java.awt.Font("TH Sarabun New", 1, 24)); // NOI18N
         tableBikeStatus.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -203,11 +218,34 @@ public class FormMenuMain extends javax.swing.JFrame {
         menuBikeInfo.setBorder(null);
         menuBikeInfo.setText("ข้อมูลรถ");
         menuBikeInfo.setFont(new java.awt.Font("TH Sarabun New", 1, 18)); // NOI18N
+        menuBikeInfo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuBikeInfoMouseClicked(evt);
+            }
+        });
         menuBar.add(menuBikeInfo);
 
         menuCusInfo.setText("ข้อมูลลูกค้า");
         menuCusInfo.setFont(new java.awt.Font("TH Sarabun New", 1, 18)); // NOI18N
+        menuCusInfo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuCusInfoMouseClicked(evt);
+            }
+        });
         menuBar.add(menuCusInfo);
+
+        menuEmployeeInfo.setBorder(null);
+        menuEmployeeInfo.setText("ข้อมูลพนักงาน");
+        menuEmployeeInfo.setFont(new java.awt.Font("TH Sarabun New", 1, 18)); // NOI18N
+        menuEmployeeInfo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuEmployeeInfoMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                menuEmployeeInfoMouseEntered(evt);
+            }
+        });
+        menuBar.add(menuEmployeeInfo);
 
         menuRentBike.setBorder(null);
         menuRentBike.setText("การเช่า");
@@ -228,11 +266,6 @@ public class FormMenuMain extends javax.swing.JFrame {
             }
         });
         menuBar.add(menuReturnBike);
-
-        menuIncome.setBorder(null);
-        menuIncome.setText("รายได้");
-        menuIncome.setFont(new java.awt.Font("TH Sarabun New", 1, 18)); // NOI18N
-        menuBar.add(menuIncome);
 
         menuLogout.setBorder(null);
         menuLogout.setText("ออกจากระบบ");
@@ -256,7 +289,7 @@ public class FormMenuMain extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(head, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 8, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -264,7 +297,7 @@ public class FormMenuMain extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void menuMainMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuMainMenuMouseClicked
-        new FormMenuMain().show();
+        new FormBikeStatus().show();
         dispose();
     }//GEN-LAST:event_menuMainMenuMouseClicked
 
@@ -275,7 +308,8 @@ public class FormMenuMain extends javax.swing.JFrame {
     }//GEN-LAST:event_menuRentBikeMousePressed
 
     private void menuReturnBikeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuReturnBikeMousePressed
-       // TODO add your handling code here:
+        new FormReturn().show();
+        dispose();       // TODO add your handling code here:
     }//GEN-LAST:event_menuReturnBikeMousePressed
 
     private void menuLogoutMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuLogoutMousePressed
@@ -289,18 +323,44 @@ public class FormMenuMain extends javax.swing.JFrame {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
-        if (!service.isFill(txtSearch.getText())) {
+        if (!isFill(txtSearch.getText())) {
             System.out.println("ไม่กรอก");
         } else {
-            search(txtSearch.getText());
+            search();
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 
+    public boolean isFill(String field) {
+        return !field.equals("");
+    }
     private void btnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAllActionPerformed
         // TODO add your handling code here:
-        showTable();
+        renderTable();
         txtSearch.setText("");
     }//GEN-LAST:event_btnAllActionPerformed
+
+    private void menuCusInfoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCusInfoMouseClicked
+        // TODO add your handling code here:
+        new FormShowCustomer().show();
+        dispose();
+    }//GEN-LAST:event_menuCusInfoMouseClicked
+
+    private void menuBikeInfoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuBikeInfoMouseClicked
+        // TODO add your handling code here:
+        new FormManageBike().show();
+        dispose();
+    }//GEN-LAST:event_menuBikeInfoMouseClicked
+
+    private void menuEmployeeInfoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuEmployeeInfoMouseClicked
+        // TODO add your handling code here:
+        new FormManageEmployee().show();
+        dispose();
+
+    }//GEN-LAST:event_menuEmployeeInfoMouseClicked
+
+    private void menuEmployeeInfoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuEmployeeInfoMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuEmployeeInfoMouseEntered
 
     /**
      * @param args the command line arguments
@@ -319,20 +379,21 @@ public class FormMenuMain extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FormMenuMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormBikeStatus.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FormMenuMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormBikeStatus.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FormMenuMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormBikeStatus.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FormMenuMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormBikeStatus.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormMenuMain().setVisible(true);
+                new FormBikeStatus().setVisible(true);
             }
         });
     }
@@ -351,7 +412,7 @@ public class FormMenuMain extends javax.swing.JFrame {
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu menuBikeInfo;
     private javax.swing.JMenu menuCusInfo;
-    private javax.swing.JMenu menuIncome;
+    private javax.swing.JMenu menuEmployeeInfo;
     private javax.swing.JMenu menuLogout;
     private javax.swing.JMenu menuMainMenu;
     private javax.swing.JMenu menuRentBike;
@@ -359,4 +420,29 @@ public class FormMenuMain extends javax.swing.JFrame {
     private javax.swing.JTable tableBikeStatus;
     private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void renderTable() {
+        List<Bike> bikeList = service.getAllBike();
+        Iterator<Bike> bikeCursor = bikeList.iterator();
+
+        tableBikeStatus.getTableHeader().setFont(new Font("TH Sarabun New", Font.BOLD, 18));
+        String[] column = {"รหัสรถ", "สถานะ"};
+
+        DefaultTableModel model = new DefaultTableModel(column, 0);
+
+        try {
+            while (bikeCursor.hasNext()) {
+                Bike bike = bikeCursor.next();
+                String bikeId = bike.getBikeId();
+                String bikeStatus = bike.getBikeStatus();
+                model.addRow(new Object[]{bikeId, bikeStatus});
+            }
+        } finally {
+
+        }
+        tableBikeStatus.setModel(model);
+
+    }
+
 }

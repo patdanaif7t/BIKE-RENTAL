@@ -57,12 +57,12 @@ public class CustomerDao implements DaoInterface<Customer> {
     }
 
     @Override
-    public Customer getById(String cusCitizenId) {
-        return cusCol.find(eq("cusCitizenId", cusCitizenId)).first();
+    public Customer findById(String customerCitizenId) {
+        return cusCol.find(eq("customerCitizenId", customerCitizenId)).first();
     }
 
     @Override
-    public List<Customer> getAll() {
+    public List<Customer> findAll() {
         return cusCol.find().into(new ArrayList<>());
     }
     

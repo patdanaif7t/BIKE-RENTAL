@@ -18,6 +18,13 @@ public class Employee {
         
     }
 
+    public Employee(String employeeId, String password, String role) {
+        this.employeeId = employeeId;
+        this.password = password;
+        this.role = role;
+    }
+    
+
     public String getEmployeeId() {
         return employeeId;
     }

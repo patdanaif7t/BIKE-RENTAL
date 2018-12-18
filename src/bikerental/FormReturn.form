@@ -38,6 +38,9 @@
               <Font name="TH Sarabun New" size="18" style="1"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuBikeInfoMouseClicked"/>
+          </Events>
         </Menu>
         <Menu class="javax.swing.JMenu" name="menuCusInfo">
           <Properties>
@@ -46,6 +49,24 @@
               <Font name="TH Sarabun New" size="18" style="1"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuCusInfoMouseClicked"/>
+          </Events>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="menuEmployeeInfo">
+          <Properties>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="null"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="&#xe02;&#xe49;&#xe2d;&#xe21;&#xe39;&#xe25;&#xe1e;&#xe19;&#xe31;&#xe01;&#xe07;&#xe32;&#xe19;"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="TH Sarabun New" size="18" style="1"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuEmployeeInfoMouseClicked"/>
+            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuEmployeeInfoMouseEntered"/>
+          </Events>
         </Menu>
         <Menu class="javax.swing.JMenu" name="menuRentBike">
           <Properties>
@@ -75,17 +96,6 @@
             <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuReturnBikeMousePressed"/>
           </Events>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="menuIncome">
-          <Properties>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="null"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="&#xe23;&#xe32;&#xe22;&#xe44;&#xe14;&#xe49;"/>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="TH Sarabun New" size="18" style="1"/>
-            </Property>
-          </Properties>
-        </Menu>
         <Menu class="javax.swing.JMenu" name="menuLogout">
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -105,6 +115,7 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="title" type="java.lang.String" value="&#xe01;&#xe32;&#xe23;&#xe04;&#xe37;&#xe19;"/>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
@@ -127,14 +138,14 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="head" alignment="0" pref="914" max="32767" attributes="0"/>
+          <Component id="head" alignment="0" pref="900" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <Component id="head" min="-2" pref="600" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="8" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -186,7 +197,7 @@
         <Component class="javax.swing.JLabel" name="iconLogo">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/image/R (1).png"/>
+              <Image iconType="3" name="/image/logo.png"/>
             </Property>
           </Properties>
           <Constraints>
@@ -283,7 +294,7 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="540" y="110" width="100" height="40"/>
+              <AbsoluteConstraints x="540" y="110" width="130" height="40"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -307,7 +318,7 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="620" y="110" width="120" height="40"/>
+              <AbsoluteConstraints x="660" y="110" width="140" height="40"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -317,16 +328,16 @@
           </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="70" y="160" width="780" height="350"/>
+              <AbsoluteConstraints x="60" y="180" width="780" height="230"/>
             </Constraint>
           </Constraints>
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTable" name="tableBikeStatus">
+            <Component class="javax.swing.JTable" name="tableBikeRent">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="TH Sarabun New" size="18" style="1"/>
+                  <Font name="DB Narai X" size="24" style="0"/>
                 </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="4" rowCount="4">
@@ -337,9 +348,119 @@
                   </Table>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tableBikeRentMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
+        <Component class="javax.swing.JLabel" name="jLabel2">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="DB Narai X" size="24" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="&#xe23;&#xe2b;&#xe31;&#xe2a;&#xe01;&#xe32;&#xe23;&#xe40;&#xe0a;&#xe48;&#xe32;-&#xe04;&#xe37;&#xe19; :"/>
+          </Properties>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+              <AbsoluteConstraints x="180" y="430" width="-1" height="-1"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtRentId">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="DB Narai X" size="24" style="0"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtRentIdActionPerformed"/>
+          </Events>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+              <AbsoluteConstraints x="300" y="430" width="190" height="33"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtBikeId">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="DB Narai X" size="24" style="0"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtBikeIdActionPerformed"/>
+          </Events>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+              <AbsoluteConstraints x="300" y="470" width="190" height="33"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel3">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="DB Narai X" size="24" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="&#xe23;&#xe2b;&#xe31;&#xe2a;&#xe23;&#xe16; :"/>
+          </Properties>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+              <AbsoluteConstraints x="230" y="470" width="-1" height="-1"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel4">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="DB Narai X" size="24" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="&#xe04;&#xe48;&#xe32;&#xe1b;&#xe23;&#xe31;&#xe1a; :"/>
+          </Properties>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+              <AbsoluteConstraints x="230" y="510" width="-1" height="-1"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtFine">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="DB Narai X" size="24" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtFineActionPerformed"/>
+          </Events>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+              <AbsoluteConstraints x="300" y="510" width="190" height="33"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnReturn">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="DB Narai X" size="24" style="0"/>
+            </Property>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/image/return.png"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="&#xe04;&#xe37;&#xe19;&#xe23;&#xe16;"/>
+            <Property name="borderPainted" type="boolean" value="false"/>
+            <Property name="contentAreaFilled" type="boolean" value="false"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnReturnActionPerformed"/>
+          </Events>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+              <AbsoluteConstraints x="570" y="430" width="120" height="40"/>
+            </Constraint>
+          </Constraints>
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

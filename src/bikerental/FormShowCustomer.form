@@ -38,6 +38,9 @@
               <Font name="TH Sarabun New" size="18" style="1"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuBikeInfoMouseClicked"/>
+          </Events>
         </Menu>
         <Menu class="javax.swing.JMenu" name="menuCusInfo">
           <Properties>
@@ -46,6 +49,24 @@
               <Font name="TH Sarabun New" size="18" style="1"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuCusInfoMouseClicked"/>
+          </Events>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="menuEmployeeInfo">
+          <Properties>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="null"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="&#xe02;&#xe49;&#xe2d;&#xe21;&#xe39;&#xe25;&#xe1e;&#xe19;&#xe31;&#xe01;&#xe07;&#xe32;&#xe19;"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="TH Sarabun New" size="18" style="1"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuEmployeeInfoMouseClicked"/>
+            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuEmployeeInfoMouseEntered"/>
+          </Events>
         </Menu>
         <Menu class="javax.swing.JMenu" name="menuRentBike">
           <Properties>
@@ -75,17 +96,6 @@
             <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuReturnBikeMousePressed"/>
           </Events>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="menuIncome">
-          <Properties>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="null"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="&#xe23;&#xe32;&#xe22;&#xe44;&#xe14;&#xe49;"/>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="TH Sarabun New" size="18" style="1"/>
-            </Property>
-          </Properties>
-        </Menu>
         <Menu class="javax.swing.JMenu" name="menuLogout">
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -105,11 +115,13 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="title" type="java.lang.String" value="&#xe02;&#xe49;&#xe2d;&#xe21;&#xe39;&#xe25;&#xe25;&#xe39;&#xe01;&#xe04;&#xe49;&#xe32;"/>
+    <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="menuBar" type="java.lang.String" value="menuBar"/>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
-    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="true"/>
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -156,7 +168,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTable" name="tb_cus">
+            <Component class="javax.swing.JTable" name="tableCustomer">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="DB Narai X" size="24" style="0"/>
@@ -173,14 +185,14 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JTextField" name="tx_se">
+        <Component class="javax.swing.JTextField" name="txtSearch">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="DB Narai X" size="18" style="0"/>
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tx_seActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtSearchActionPerformed"/>
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -295,7 +307,7 @@
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/image/R (1).png"/>
+              <Image iconType="3" name="/image/logo.png"/>
             </Property>
           </Properties>
           <Constraints>
@@ -304,7 +316,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="tx_time">
+        <Component class="javax.swing.JLabel" name="labelShowTime">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="DB Narai X" size="18" style="1"/>
@@ -317,7 +329,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="tx_Date">
+        <Component class="javax.swing.JLabel" name="labelShowDate">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="DB Narai X" size="18" style="1"/>
